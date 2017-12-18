@@ -7,6 +7,8 @@ import Data.Char
 
   Part 1:
 
+  [...]
+
   You're standing in a room with "digitization quarantine" written
   in LEDs along one wall. The only door is locked, but it includes a
   small interface.
@@ -32,6 +34,8 @@ import Data.Char
     next one is the last digit, 9
 
   Part 2:
+
+  [...]
 
   Now, instead of considering the next digit, it wants you to
   consider the digit halfway around the circular list. That is,
