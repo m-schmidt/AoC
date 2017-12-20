@@ -25,7 +25,7 @@ realloc v = Vect.imap update v
     maxIndex = Vect.maxIndex v
     (d, m)   = Vect.unsafeIndex v maxIndex `divMod` vLength
 
--- Count number of allocation steps before cycle starts and its length
+-- Count number of allocation steps until cycle starts and its length
 allocationCycle :: Vector Int -> (Int, Int)
 allocationCycle = go Map.empty . iterate realloc
   where
