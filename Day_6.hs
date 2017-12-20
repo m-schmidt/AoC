@@ -2,28 +2,38 @@ module Day_6 where
 
 -- http://adventofcode.com/2017/day/6
 
-import Data.IntMap (IntMap)
-import qualified Data.IntMap.Strict as IntMap
+import Data.Map (Map)
+import qualified Data.Map as Map
+
+import Data.Vector.Unboxed (Vector)
+import qualified Data.Vector.Unboxed as Vect
 
 
--- Convert string of numbers into a map of integers (key is index of jump offset)
-convert :: String -> IntMap Int
-convert = IntMap.fromList . zip [0..] . map read . words
+-- Convert string of numbers into a vector of integers
+convert :: String -> Vector Int
+convert = Vect.fromList . map read . words
 
--- Execute steps with environment `env` until index is out of bounds using different update functions.
-steps :: IntMap Int -> (Int, Int)
-steps env = (go update1 0 0 env, go update2 0 0 env)
+-- Execute one round of reallocation
+realloc :: Vector Int -> Vector Int
+realloc v = Vect.imap update v
   where
-    go update acc n env = case IntMap.lookup n env of
-      Just o -> go update (acc+1) (n+o) (IntMap.adjust update n env)
-      _      -> acc
+    update i x | i < maxIndex = x + d + fromEnum (i <= maxIndex + m - vLength)
+               | i > maxIndex = x + d + fromEnum (i <= maxIndex + m)
+               | otherwise    = d
 
-    update1 = (+1)
-    update2 n | n >= 3    = n-1
-              | otherwise = n+1
+    vLength  = Vect.length v
+    maxIndex = Vect.maxIndex v
+    (d, m)   = Vect.unsafeIndex v maxIndex `divMod` vLength
+
+-- Count number of allocation steps before cycle starts and its length
+allocationCycle :: Vector Int -> (Int, Int)
+allocationCycle = go Map.empty . iterate realloc
+  where
+    go m (v:vs) | v `Map.member` m = (Map.size m, Map.size m - m Map.! v)
+                | otherwise        = go (Map.insert v (Map.size m) m) vs
 
 
 main = do
-  putStrLn $ solve "0 3 0 1 -3"
+  putStrLn $ solve "0 2 7 0"
   where
-    solve x = concat [ "number of steps = ", show . steps . convert $ x ]
+    solve x = concat [ "number of steps = ", show . allocCycle . convert $ x ]
