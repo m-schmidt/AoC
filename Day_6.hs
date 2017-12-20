@@ -36,4 +36,4 @@ allocationCycle = go Map.empty . iterate realloc
 main = do
   putStrLn $ solve "0 2 7 0"
   where
-    solve x = concat [ "number of steps = ", show . allocCycle . convert $ x ]
+    solve x = concat [ "number of steps / cycle length = ", show . allocCycle . convert $ x ]
