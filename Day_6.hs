@@ -2,7 +2,7 @@ module Day_6 where
 
 -- http://adventofcode.com/2017/day/6
 
-import qualified Data.Map as Map
+import qualified Data.Map.Strict as Map
 
 import Data.Vector.Unboxed (Vector)
 import qualified Data.Vector.Unboxed as Vect
