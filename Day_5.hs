@@ -6,11 +6,11 @@ import Data.IntMap (IntMap)
 import qualified Data.IntMap.Strict as IntMap
 
 
--- Convert string of numbers into a map of integers (key is index of jump offset)
+-- |Convert string of numbers into a map of integers (key is index of jump offset)
 convert :: String -> IntMap Int
 convert = IntMap.fromList . zip [0..] . map read . words
 
--- Execute steps with environment `env` until index is out of bounds using different update functions.
+-- |Execute steps with environment `env` until index is out of bounds using different update functions.
 steps :: IntMap Int -> (Int, Int)
 steps env = (go update1 0 0 env, go update2 0 0 env)
   where

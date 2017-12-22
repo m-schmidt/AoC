@@ -8,11 +8,11 @@ import Data.Vector.Unboxed (Vector)
 import qualified Data.Vector.Unboxed as Vect
 
 
--- Convert string of numbers into a vector of integers
+-- |Convert string of numbers into a vector of integers
 convert :: String -> Vector Int
 convert = Vect.fromList . map read . words
 
--- Execute one round of reallocation
+-- |Execute one round of reallocation
 realloc :: Vector Int -> Vector Int
 realloc v = Vect.imap update v
   where
@@ -24,7 +24,7 @@ realloc v = Vect.imap update v
     maxIdx = Vect.maxIndex v
     (d, m) = Vect.unsafeIndex v maxIdx `divMod` vLen
 
--- Count number of allocation steps until cycle starts and its length
+-- |Count number of allocation steps until cycle starts and its length
 allocationCycle :: Vector Int -> (Int, Int)
 allocationCycle = go Map.empty . iterate realloc
   where

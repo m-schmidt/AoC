@@ -6,14 +6,14 @@ import Data.List
 import Control.Applicative
 
 
--- Check for duplicate words
+-- |Check for duplicate words
 isValid1 :: String -> Bool
 isValid1 s = length (words s) == length (nub $ words s)
 
 countValid1 :: [String] -> Int
 countValid1 = length . filter (liftA2 (&&) isValid1 isValid2)
 
--- Check for anagrams
+-- |Check for anagrams
 isValid2 :: String -> Bool
 isValid2 s = null [ w1 | w1 <- words s
                        , w2 <- words s

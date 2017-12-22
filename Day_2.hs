@@ -5,17 +5,17 @@ module Day_2 where
 import Control.Applicative
 
 
--- Parse a string representation of an input matrix
+-- |Parse a string representation of an input matrix
 convert :: String -> [[Int]]
 convert = map (map read . words) . filter (not . null) . lines
 
--- Sums the differences of all rows of a matrix
+-- |Sums the differences of all rows of a matrix
 checkSum1 :: [[Int]] -> Int
 checkSum1 = sum . map diff
   where
     diff = liftA2 (-) maximum minimum
 
--- Sums the quotients of the evenly dividable numbers
+-- |Sums the quotients of the evenly dividable numbers
 checkSum2 :: [[Int]] -> Int
 checkSum2 = sum . map even_div
   where

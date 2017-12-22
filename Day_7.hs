@@ -19,14 +19,14 @@ import qualified Data.Map.Strict as Map
 import Text.ParserCombinators.Parsec
 
 
--- Program description
+-- |Program description
 data Desc = Desc { d_name   :: String
                  , d_weight :: Int
                  , d_subs   :: [String]
                  } deriving Show
 
 
--- Parser for a single program description
+-- |Parser for a single program description
 program :: Parser Desc
 program = do
   n    <- ident
@@ -43,12 +43,12 @@ program = do
     lexeme p = p <* spaces
 
 
--- Parser for a list of program descriptions
+-- |Parser for a list of program descriptions
 programs :: Parser [Desc]
 programs = many program <* eof
 
 
--- Name of program at root of tree
+-- |Name of program at root of tree
 rootName :: [Desc] -> String
 rootName descs = Set.elemAt 0 $ Set.difference allProgs allSubs
   where
@@ -56,14 +56,14 @@ rootName descs = Set.elemAt 0 $ Set.difference allProgs allSubs
     allSubs  = Set.fromList . concat $ map d_subs descs -- all names of subprograms
 
 
--- Mapping from program name to its description
+-- |Mapping from program name to its description
 descMap :: [Desc] -> Map String Desc
 descMap = Map.fromList . map (\d -> (d_name d, d))
 
 
 
 
--- Program tree
+-- |Program tree
 data Tree = Tree { t_name       :: String
                  , t_weight     :: Int     -- weight of root
                  , t_weight_acc :: Int     -- accumulated weight of root and its subtrees
@@ -71,7 +71,7 @@ data Tree = Tree { t_name       :: String
                  } deriving (Show, Eq)
 
 
--- Build tree with validation from a list of descriptions
+-- |Build tree with validation from a list of descriptions
 makeTree :: ([Tree] -> Except String [Tree]) -> [Desc] -> Either String Tree
 makeTree validate descs = runIdentity . runExceptT . go . description $ rootName descs
   where
@@ -87,7 +87,7 @@ makeTree validate descs = runIdentity . runExceptT . go . description $ rootName
       return $ Tree n w (w + wsum st) st
 
 
--- Build tree and check its balance
+-- |Build tree and check its balance
 checkTree :: [Desc] -> String
 checkTree descs =
   case makeTree sameWeights descs of
@@ -95,7 +95,7 @@ checkTree descs =
     Right _  -> "The tree is balanced!"
 
 
--- Validator that checks whether neighbored trees have the same weight
+-- |Validator that checks whether neighbored trees have the same weight
 sameWeights :: [Tree] -> Except String [Tree]
 sameWeights trees | ok        = return trees
                   | otherwise = throwE $ describeError trees
@@ -104,7 +104,7 @@ sameWeights trees | ok        = return trees
     allEqual xs = and $ zipWith (==) xs (drop 1 xs)
 
 
--- Identify the tree with an incorrect weight and compute its correct weight
+-- |Identify the tree with an incorrect weight and compute its correct weight
 describeError :: [Tree] -> String
 describeError trees =
   case (map head . sortWith length . groupWith t_weight_acc . sortWith t_weight_acc) trees of

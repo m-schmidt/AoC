@@ -5,11 +5,11 @@ module Day_1 where
 import Data.Char
 
 
--- Convert string of digits into list of integers
+-- |Convert string of digits into list of integers
 convert :: String -> [Int]
 convert = map $ flip (-) 48 . ord
 
--- Find sum of all digits that match the n-th next digit (wraps)
+-- |Find sum of all digits that match the n-th next digit (wraps)
 findSum :: Int -> [Int] -> Int
 findSum n = sum . map match . pairs
   where
