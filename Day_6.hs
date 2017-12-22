@@ -17,13 +17,13 @@ convert = Vect.fromList . map read . words
 realloc :: Vector Int -> Vector Int
 realloc v = Vect.imap update v
   where
-    update i x | i < maxIndex = x + d + fromEnum (i <= maxIndex + m - vLength)
-               | i > maxIndex = x + d + fromEnum (i <= maxIndex + m)
+    update i x | i < maxIdx = x + d + fromEnum (i <= maxIdx + m - vLen)
+               | i > maxIdx = x + d + fromEnum (i <= maxIdx + m)
                | otherwise    = d
 
-    vLength  = Vect.length v
-    maxIndex = Vect.maxIndex v
-    (d, m)   = Vect.unsafeIndex v maxIndex `divMod` vLength
+    vLen   = Vect.length v
+    maxIdx = Vect.maxIndex v
+    (d, m) = Vect.unsafeIndex v maxIdx `divMod` vLen
 
 -- Count number of allocation steps before cycle starts and its length
 allocationCycle :: Vector Int -> (Int, Int)
@@ -36,4 +36,4 @@ allocationCycle = go Map.empty . iterate realloc
 main = do
   putStrLn $ solve "0 2 7 0"
   where
-    solve x = concat [ "number of steps / cycle length = ", show . allocCycle . convert $ x ]
+    solve x = concat [ "number of steps / cycle length = ", show . allocationCycle . convert $ x ]
