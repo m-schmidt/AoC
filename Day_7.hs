@@ -1,5 +1,3 @@
-{-# LANGUAGE FlexibleContexts #-}
-
 module Day_7 where
 
 -- http://adventofcode.com/2017/day/7
@@ -35,12 +33,11 @@ program = do
   return $ Desc n w subs
 
   where
-    ident    = lexeme $ many1 letter
-    weight   = lexeme $ many1 digit >>= return . read
-    comma    = lexeme $ char ','
-    arrow    = lexeme $ string "->"
-    enparen  = between (lexeme $ char '(') (lexeme $ char ')')
-    lexeme p = p <* spaces
+    ident   = many1 letter <* spaces  :: Parser String
+    weight  = many1 digit <* spaces >>= return . read  :: Parser Int
+    comma   = char ','  <* spaces  :: Parser Char
+    arrow   = string "->"  <* spaces  :: Parser String
+    enparen = between (char '(' <* spaces) (char ')' <* spaces)  :: Parser a -> Parser a
 
 
 -- |Parser for a list of program descriptions
