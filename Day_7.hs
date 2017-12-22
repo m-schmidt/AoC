@@ -116,14 +116,28 @@ describeError trees =
     -- sort with comparison that applies f before actually comparing the elements
     sortWith f  = sortBy (\a b -> compare (f a) (f b))
     -- readable description with corrected weight
-    message t_err t_ok = concat [ "'", t_name t_err, "' should have weight ", show (t_weight t_err + t_weight_acc t_ok - t_weight_acc t_err)]
-
-
+    message t_err t_ok = concat [ "'"
+                                , t_name t_err
+                                , "' should have weight "
+                                , show (t_weight t_err + t_weight_acc t_ok - t_weight_acc t_err)
+                                ]
 
 
 main :: IO ()
 main = do
-  let input = "pbga (66) xhth (57) ebii (61) havc (66) ktlj (57) fwft (72) -> ktlj, cntj, xhth qoyq (66) padx (45) -> pbga, havc, qoyq tknk (41) -> ugml, padx, fwft jptl (61) ugml (68) -> gyxo, ebii, jptl gyxo (61) cntj (57)"
+  let input = "pbga (66) \
+              \xhth (57) \
+              \ebii (61) \
+              \havc (66) \
+              \ktlj (57) \
+              \fwft (72) -> ktlj, cntj, xhth \
+              \qoyq (66) \
+              \padx (45) -> pbga, havc, qoyq \
+              \tknk (41) -> ugml, padx, fwft \
+              \jptl (61) \
+              \ugml (68) -> gyxo, ebii, jptl \
+              \gyxo (61) \
+              \cntj (57)"
   let descs = fromRight [] $ parse (many program <* eof) "input" input
   when (null descs) $ error "invalid input"
   putStrLn $ concat ["Root: '", rootName descs, "'"]
