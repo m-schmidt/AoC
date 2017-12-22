@@ -2,7 +2,6 @@ module Day_6 where
 
 -- http://adventofcode.com/2017/day/6
 
-import Data.Map (Map)
 import qualified Data.Map as Map
 
 import Data.Vector.Unboxed (Vector)
@@ -31,8 +30,10 @@ allocationCycle = go Map.empty . iterate realloc
   where
     go m (v:vs) | v `Map.member` m = (Map.size m, Map.size m - m Map.! v)
                 | otherwise        = go (Map.insert v (Map.size m) m) vs
+    go _ _ = undefined
 
 
+main :: IO ()
 main = do
   putStrLn $ solve "0 2 7 0"
   where

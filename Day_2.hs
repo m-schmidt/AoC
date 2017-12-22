@@ -22,6 +22,7 @@ checkSum2 = sum . map even_div
     even_div xs = head [ x `div` y | x <- xs, y <- xs, x /= y, x `mod` y == 0]
 
 
+main :: IO ()
 main = do
   solve checkSum1 "5 1 9 5\n\
                   \7 5 3\n\

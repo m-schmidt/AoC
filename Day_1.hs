@@ -18,6 +18,7 @@ findSum n = sum . map match . pairs
                  | otherwise = 0
 
 
+main :: IO ()
 main = do
   solve1 "1122"
   solve1 "1111"

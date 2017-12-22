@@ -25,6 +25,7 @@ countValid2 :: [String] -> Int
 countValid2 = length . filter (liftA2 (&&) isValid1 isValid2)
 
 
+main :: IO ()
 main = do
   putStrLn $ solve
     [ "aa bb cc dd ee"

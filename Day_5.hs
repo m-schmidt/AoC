@@ -14,8 +14,8 @@ convert = IntMap.fromList . zip [0..] . map read . words
 steps :: IntMap Int -> (Int, Int)
 steps env = (go update1 0 0 env, go update2 0 0 env)
   where
-    go update acc n env = case IntMap.lookup n env of
-      Just o -> go update (acc+1) (n+o) (IntMap.adjust update n env)
+    go update acc n e = case IntMap.lookup n e of
+      Just o -> go update (acc+1) (n+o) (IntMap.adjust update n e)
       _      -> acc
 
     update1 = (+1)
@@ -23,6 +23,7 @@ steps env = (go update1 0 0 env, go update2 0 0 env)
               | otherwise = n+1
 
 
+main :: IO ()
 main = do
   putStrLn $ solve "0 3 0 1 -3"
   where

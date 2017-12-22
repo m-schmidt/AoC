@@ -29,6 +29,7 @@ pathToCell n = take (n-1) $ go 1
 distance = hamiltonDistance . mconcat . pathToCell
 
 
+main :: IO ()
 main = do
   putStrLn $ solve 1
   putStrLn $ solve 12
