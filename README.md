@@ -2,4 +2,4 @@
 
 To run the code for a specific day:
 
-      $ stack runghc <file>
+      $ runhaskell <file>
