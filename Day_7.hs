@@ -33,11 +33,11 @@ program = do
   return $ Desc n w subs
 
   where
-    ident   = many1 letter <* spaces  :: Parser String
-    weight  = many1 digit <* spaces >>= return . read  :: Parser Int
-    comma   = char ','  <* spaces  :: Parser Char
-    arrow   = string "->"  <* spaces  :: Parser String
-    enparen = between (char '(' <* spaces) (char ')' <* spaces)  :: Parser a -> Parser a
+    ident   = many1 letter <* spaces :: Parser String
+    weight  = many1 digit <* spaces >>= return . read :: Parser Int
+    comma   = char ','  <* spaces :: Parser Char
+    arrow   = string "->"  <* spaces :: Parser String
+    enparen = between (char '(' <* spaces) (char ')' <* spaces) :: Parser a -> Parser a
 
 
 -- |Parser for a list of program descriptions
