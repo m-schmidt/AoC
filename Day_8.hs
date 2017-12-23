@@ -54,10 +54,10 @@ evalInstrOp Decrement = (-)
 
 
 -- |Instruction
-data Instr = Instr { i_dst   :: String       -- ^ register updated by instruction
-                   , i_op    :: Int -> Int   -- ^ update operation when executing
-                   , c_src   :: String       -- ^ src register for guard
-                   , c_guard :: Int -> Bool  -- ^ guard for conditional execution
+data Instr = Instr { _dst   :: String       -- ^ register updated by instruction
+                   , _op    :: Int -> Int   -- ^ update operation when executing
+                   , _src   :: String       -- ^ src register for guard
+                   , _guard :: Int -> Bool  -- ^ guard for conditional execution
                    }
 
 
