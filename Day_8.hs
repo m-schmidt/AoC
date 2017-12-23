@@ -115,9 +115,7 @@ execInstruction (Instr i_dst i_op c_src c_guard) = do
 
 -- |Read register from state
 getRegisterValue :: String -> (Int, Registers) -> Int
-getRegisterValue k (_, m) | k `Map.member` m = m Map.! k
-                          | otherwise        = 0
-
+getRegisterValue k (_, m) = Map.findWithDefault 0 k m
 
 -- |Update state with new register value
 setRegisterValue :: String -> Int -> (Int, Registers) -> (Int, Registers)
