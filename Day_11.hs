@@ -46,8 +46,8 @@ sortWithRev f = sortBy $ \a b -> compare (f b) (f a)
 -- |x/y/z coordinate in 3D space
 type Coord = (Int, Int, Int)
 
-move :: HexDirection -> Coord -> Coord
-move dir (x, y, z) = case dir of
+move :: Coord -> HexDirection -> Coord
+move (x, y, z) dir = case dir of
   North     -> (x,     y,     z + 1)
   South     -> (x,     y,     z - 1)
   SouthWest -> (x,     y + 1, z    )
@@ -83,10 +83,9 @@ main = do
     -- parse input to list of move directions
     path str = fromRight [] $ parse (hexDirections <* eof) "input" str
     -- compute distance from center at end of path
-    distance = minimize . foldr move (0, 0, 0)
+    distance = minimize . foldl' move (0, 0, 0)
     -- compute maximum distance from center at any point of the path
-    maxDistance = maximum . map distance . inits
-
+    maxDistance = maximum . map minimize . scanl' move (0, 0, 0)
     -- example inputs
     solve p = concat [ "Distance: ", show $ distance p, ", max distance during walk: ", show $ maxDistance p ]
 
