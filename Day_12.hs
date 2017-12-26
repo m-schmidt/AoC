@@ -30,8 +30,8 @@ idrec = do
   return $ IDRec pid pipes
   where
     number = many1 digit <* spaces >>= return . read :: Parser Int
-    comma  = char ','  <* spaces :: Parser Char
-    arrow  = string "<->"  <* spaces :: Parser String
+    comma  = char ',' <* spaces :: Parser Char
+    arrow  = string "<->" <* spaces :: Parser String
 
 
 -- |Parser for a list of ID records
