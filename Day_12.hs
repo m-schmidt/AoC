@@ -43,7 +43,7 @@ idrecs = many idrec <* eof
 unionFind :: [IDRec] -> ST s (IntMap (ST.Point s Int))
 unionFind recs = do
   nm <- IntMap.fromList <$> mapM freshNode recs
-  mapM (unifyPrograms nm) recs
+  _  <- mapM (unifyPrograms nm) recs
   return nm
 
   where
@@ -61,9 +61,9 @@ unionFind recs = do
 findGroup :: Int -> [IDRec] -> [Int]
 findGroup d recs = runST $ do
   nm <- unionFind recs
-  concat <$> mapM (collectEquivs nm d . p_id) recs
+  concat <$> mapM (collectEquivs nm . p_id) recs
   where
-    collectEquivs nm d d' = do
+    collectEquivs nm d' = do
       let p  = nm IntMap.! d
       let p' = nm IntMap.! d'
       eq <- ST.equivalent p p'
@@ -96,6 +96,3 @@ main = do
 
   let cnt = countGroups records
   putStrLn $ concat ["There are ", show cnt, " unconnected groups."]
-
-  where
-    records str = fromRight [] $ parse idrecs "input" str
