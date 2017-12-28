@@ -1,4 +1,4 @@
-module Main where
+module Day_14 where
 
 -- http://adventofcode.com/2017/day/14
 
