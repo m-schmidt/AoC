@@ -1,8 +1,5 @@
 -- https://adventofcode.com/2019/day/1
 
-import Data.List (mapAccumL)
-import Data.Set (empty, member, insert)
-
 -- Simple Fuel requirement for mass `m`
 fuel m = m `div` 3 - 2
 
