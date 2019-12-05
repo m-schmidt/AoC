@@ -45,14 +45,13 @@ run noun verb = result . execute . patch
     result (_, m) = get m 0
 
 
+-- split a string containing comma separated words into a list of words
+split_on_comma str = words $ map (\ch -> if ch == ',' then ' ' else ch) str
+
 -- parse input as list of comma separated integers
-parse = fromList . map read . words . map update
-  where
-    update ',' = ' '
-    update ch  = ch
+parse = fromList . map read . split_on_comma
 
 
-main :: IO ()
 main = do
   initial_mem <- parse <$> readFile ("day_2_input.txt")
   let p1 = run 12 2 initial_mem

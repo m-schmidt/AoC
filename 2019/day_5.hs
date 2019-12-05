@@ -63,7 +63,6 @@ split_on_comma str = words $ map (\ch -> if ch == ',' then ' ' else ch) str
 parse = fromList . map read . split_on_comma
 
 
-main :: IO ()
 main = do
   initial_mem <- parse <$> readFile ("day_5_input.txt")
   putStrLn $ "Result for part 1: " ++ (show $ dropWhile (==0) $ run initial_mem [1])

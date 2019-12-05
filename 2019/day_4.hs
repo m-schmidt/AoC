@@ -8,10 +8,10 @@ import Data.List
 value = foldl (\acc d -> acc*10 + d) 0
 
 -- check whether a list contains any consecutive sequence whose length satisfies predicate `p`
-has_seq p = any p . fmap length . group 
+has_seq p = any p . fmap length . group
 
--- compute all valid passwords whose digits satisfiy predicate `pred`
-passwords pred = do
+-- compute all valid passwords within bounds that satisfiy predicate `pred`
+passwords range_min range_max pred = do
   -- monotonic increasing digits
   d0 <- [0..9]
   d1 <- [d0..9]
@@ -19,16 +19,15 @@ passwords pred = do
   d3 <- [d2..9]
   d4 <- [d3..9]
   d5 <- [d4..9]
-  -- represented value must be in range
   let ds = [d0,d1,d2,d3,d4,d5]
+  -- represented value must be in range
   let v = value ds
-  unless (134564 <= v && v <= 585159) mempty  
-  -- represented digits must fulfill a predicate
+  unless (range_min <= v && v <= range_max) mempty
+  -- represented digits must satisfiy a predicate
   unless (pred ds) mempty
   -- v is valid
   return v
 
-main :: IO ()
 main = do
-  print $ length $ passwords (has_seq (> 1))
-  print $ length $ passwords (has_seq (==2))
+  print $ length $ passwords 134564 585159 (has_seq (> 1))
+  print $ length $ passwords 134564 585159 (has_seq (==2))

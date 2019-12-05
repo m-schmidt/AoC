@@ -12,10 +12,7 @@ len (U n) = n
 len (D n) = n
 
 -- split a string containing comma separated words into a list of words
-split_on_comma str = words $ map rep str
-  where
-    rep ',' = ' '
-    rep ch  = ch
+split_on_comma str = words $ map (\ch -> if ch == ',' then ' ' else ch) str
 
 -- parse a string as a list of movement vectors, i.e. a path
 parse_path = map p_vect . split_on_comma
@@ -111,7 +108,6 @@ min_combined_length pa pb dsts =
   minimum $ map (\dst -> length_till dst pa + length_till dst pb) dsts
 
 
-main :: IO ()
 main = do
   pa:pb:_ <- map parse_path . lines <$> readFile ("day_3_input.txt")
   putStrLn $ "Result for part 1: " ++ (show $ nearest_intersection pa pb)
