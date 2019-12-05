@@ -1,7 +1,6 @@
 -- https://adventofcode.com/2019/day/5
 
 import qualified Data.Map.Strict as Map
-import Data.Function (fix)
 
 
 -- use a map as random access memory
@@ -28,6 +27,14 @@ execute (pc, m, inp, out) =
     3  -> execute (pc + 2, set m dst1 $ head inp, tail inp, out)
     -- output
     4  -> execute (pc + 2, m, inp, src1:out)
+    -- jump-if-true
+    5  -> execute (if src1 /= 0 then src2 else pc + 3, m, inp, out)
+    -- jump-if-false
+    6  -> execute (if src1 == 0 then src2 else pc + 3, m, inp, out)
+    -- is less than
+    7  -> execute (pc + 4, set m dst3 $ if src1 < src2 then 1 else 0, inp, out)
+    -- is equal
+    8  -> execute (pc + 4, set m dst3 $ if src1 == src2 then 1 else 0, inp, out)
     -- halt
     99 -> (pc, m, inp, out)
   where
@@ -62,3 +69,4 @@ main :: IO ()
 main = do
   initial_mem <- parse <$> readFile ("day_5_input.txt")
   putStrLn $ "Result for part 1: " ++ (show $ dropWhile (==0) $ run initial_mem [1])
+  putStrLn $ "Result for part 2: " ++ (show $ run initial_mem [5])
