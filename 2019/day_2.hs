@@ -58,4 +58,4 @@ main = do
   let p1 = run 12 2 initial_mem
   let p2 = [ n * 100 + v | n <- [0..99], v <- [0..99], run n v initial_mem == 19690720 ]
   putStrLn $ "Result for part 1: " ++ (show p1)
-  putStrLn $ "REsult for part 2: " ++ (show $ head p2)
+  putStrLn $ "Result for part 2: " ++ (show $ head p2)
