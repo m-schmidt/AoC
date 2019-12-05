@@ -17,26 +17,26 @@ set m a v = Map.insert a v m
 
 
 -- raw execution of a program
-execute (pc, m, inp, out) =
+execute pc m inp out =
   case opcode of
     -- addition
-    1  -> execute (pc + 4, set m dst3 $ src1+src2, inp, out)
+    1  -> execute (pc+4) (set m dst3 $ src1 + src2) inp out
     -- multiplication
-    2  -> execute (pc + 4, set m dst3 $ src1*src2, inp, out)
+    2  -> execute (pc+4) (set m dst3 $ src1 * src2) inp out
     -- input
-    3  -> execute (pc + 2, set m dst1 $ head inp, tail inp, out)
+    3  -> execute (pc+2) (set m dst1 $ head inp) (tail inp) out
     -- output
-    4  -> execute (pc + 2, m, inp, src1:out)
+    4  -> execute (pc+2) m inp (src1:out)
     -- jump-if-true
-    5  -> execute (if src1 /= 0 then src2 else pc + 3, m, inp, out)
+    5  -> execute (if src1 /= 0 then src2 else pc+3) m inp out
     -- jump-if-false
-    6  -> execute (if src1 == 0 then src2 else pc + 3, m, inp, out)
+    6  -> execute (if src1 == 0 then src2 else pc+3) m inp out
     -- is less than
-    7  -> execute (pc + 4, set m dst3 $ if src1 < src2 then 1 else 0, inp, out)
+    7  -> execute (pc+4) (set m dst3 $ if src1 < src2 then 1 else 0) inp out
     -- is equal
-    8  -> execute (pc + 4, set m dst3 $ if src1 == src2 then 1 else 0, inp, out)
+    8  -> execute (pc+4) (set m dst3 $ if src1 == src2 then 1 else 0) inp out
     -- halt
-    99 -> (pc, m, inp, out)
+    99 -> out
   where
     -- opcode of current instruction
     ins    = get m (pc + 0)
@@ -53,9 +53,7 @@ execute (pc, m, inp, out) =
     dst3 = operand 3 True
 
 -- run a program with input and return its output
-run p inp =
-    let (_, _, _, out) = execute (0, p, inp, []) in
-    reverse out
+run p inp = reverse $ execute 0 p inp []
 
 
 -- split a string containing comma separated words into a list of words
