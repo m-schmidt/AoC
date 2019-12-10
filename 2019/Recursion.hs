@@ -1,4 +1,3 @@
--- Recursion schemes
 module Recursion where
 
 newtype Fix f = Fix { unFix :: f (Fix f) }

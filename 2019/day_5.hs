@@ -1,4 +1,5 @@
 -- https://adventofcode.com/2019/day/5
+module Day_5 where
 
 import qualified Data.Map.Strict as Map
 
@@ -53,6 +54,7 @@ execute pc m inp out =
     dst3 = operand 3 True
 
 -- run a program with input and return its output
+run :: Memory -> [Int] -> [Int]
 run p inp = reverse $ execute 0 p inp []
 
 

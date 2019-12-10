@@ -2,13 +2,11 @@
 
 -- https://adventofcode.com/2019/day/6
 
-
 import qualified Data.Map.Strict as Map
-import Data.Maybe
 import Recursion
 
 
--- OrbitData maps each object to the list of objectis directly orbiting it
+-- OrbitData maps each object to the list of objects directly orbiting it
 type OrbitData = Map.Map String [String]
 
 -- split a string "foo)bar" into a tuple containing the substrings "foo" and "bar"
@@ -32,8 +30,8 @@ data TreeF a = NodeF String [a] deriving Functor
 
 type Tree = Fix TreeF
 
-coalg :: OrbitData -> Coalgebra TreeF String
-coalg od o =
+orbits :: OrbitData -> Coalgebra TreeF String
+orbits od o =
   case Map.lookup o od of
     Nothing -> NodeF o []
     Just ps -> NodeF o ps
@@ -68,6 +66,6 @@ count_transfers (NodeF _ lst)    = update $ foldl combine DistZero lst
 
 
 main = do
-  orbit_data <- parse <$> readFile ("day_6_input.txt")
-  putStrLn $ "Part 1: " ++ (show $ hylo count_orbits (coalg orbit_data) "COM")
-  putStrLn $ "Part 2: " ++ (show $ hylo count_transfers (coalg orbit_data) "COM")
+  od <- parse <$> readFile ("day_6_input.txt")
+  putStrLn $ "Part 1: " ++ (show $ hylo count_orbits (orbits od) "COM")
+  putStrLn $ "Part 2: " ++ (show $ hylo count_transfers (orbits od) "COM")
