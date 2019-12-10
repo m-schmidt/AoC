@@ -72,14 +72,14 @@ count_transfers :: Algebra TreeF Distance
 count_transfers (NodeF "YOU" []) = DistOne 0
 count_transfers (NodeF "SAN" []) = DistOne 0
 count_transfers (NodeF _     []) = DistZero
-count_transfers (NodeF _ lst)    = increment $ foldl update DistZero lst
+count_transfers (NodeF _ lst)    = update $ foldl combine DistZero lst
   where
-      update DistZero x = x
-      update (DistOne n) (DistOne m) = DistTwo (n + m)
-      update x _     = x
+    combine DistZero x = x
+    combine (DistOne n) (DistOne m) = DistTwo (n + m)
+    combine x _     = x
 
-      increment (DistOne n) = DistOne (n+1)
-      increment x = x
+    update (DistOne n) = DistOne (n+1)
+    update x = x
 
 
 main = do
